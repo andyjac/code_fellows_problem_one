@@ -28,4 +28,4 @@ book1.enshelf(shelf1);
 console.log(shelf1.booksOnShelf);
 
 book1.unshelf(shelf1);
-console.log(shelf1.booksOmShelf);
+console.log(shelf1.booksOnShelf);
