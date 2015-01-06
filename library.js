@@ -1,59 +1,50 @@
-function Shelf(number) {
-  this.number = number;
-  this.booksOnShelf = {};
+function Shelf() {
+  this.id = nextShelfId();
+  this.books = {};
 }
 
 function Book(title, author) {
+  this.id = nextBookId();
   this.title = title;
   this.author = author;
 }
 
-Shelf.prototype.reportBooks = function() {
-  var book
-      , num = 1;
+var nextBookId = (function() {
+  var nextId = 0;
+  return function() {
+    nextId += 1;
+    return nextId;
+  };
+})();
 
-  if (Object.keys(this.booksOnShelf).length > 0) {
-    console.log(['The following books are on shelf ', this.number, ':', '\n'].join(''));
-    for (book in this.booksOnShelf) {
-      console.log([num, '. ', book, ' (', this.booksOnShelf[book].numberOfCopies, ').'].join(''));
-      num++;
-    }
-  }
-  else {
-    console.log(['There are no books on shelf ', this.number, '.'].join(''));
-  }
-  console.log('');
-};
+var nextShelfId = (function() {
+  var nextId = 0;
+  return function() {
+    nextId += 1;
+    return nextId;
+  };
+})();
 
 Book.prototype.enshelf = function(shelf) {
-  var bookOnShelf = shelf.booksOnShelf;
-
-  if (bookOnShelf[this.title] !== undefined) {
-    bookOnShelf[this.title].numberOfCopies += 1;
-    console.log(['Another copy of ', '\'', this.title, '\'', ' has been put on shelf ', shelf.number, '.'].join(''));
-    console.log(['There are now ', bookOnShelf[this.title].numberOfCopies, ' copies on this shelf.', '\n'].join(''));
+  if (this.onShelf === shelf.id) {
+    console.log('It looks like the book with that particular id is already on this shelf.\n');
+  }
+  else if (this.onShelf !== undefined && this.onShelf !== shelf.id) {
+    console.log(['It looks like the book with that particular id is already on shelf ', this.onShelf, '.'].join(''));
+    console.log('It will need to be removed before you can put it on this shelf.\n');
   }
   else {
-    bookOnShelf[this.title] = { numberOfCopies: 1 };
-    console.log(['\'', this.title, '\'', ' has been put on shelf ', shelf.number, '.', '\n'].join(''));
+    this.onShelf = shelf.id;
+    shelf.books[this.id] = { title: this.title, author: this.author };
+    console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been put on shelf ', shelf.id, '.\n'].join(''));
   }
 };
 
-Book.prototype.unshelf = function(shelf) {
-  var bookOnShelf = shelf.booksOnShelf;
+var shelf1 = new Shelf();
+var shelf2 = new Shelf();
 
-  if (bookOnShelf[this.title].numberOfCopies > 2) {
-    bookOnShelf[this.title].numberOfCopies -= 1;
-    console.log(['A copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.'].join(''));
-    console.log(['There are now ', bookOnShelf[this.title].numberOfCopies, ' copies on this shelf.', '\n'].join(''));
-  }
-  else if (bookOnShelf[this.title].numberOfCopies === 2) {
-    bookOnShelf[this.title].numberOfCopies -= 1;
-    console.log(['A copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.'].join(''));
-    console.log(['There is now 1 copy on this shelf.', '\n'].join(''));
-  }
-  else {
-    delete bookOnShelf[this.title];
-    console.log(['The last copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.', '\n'].join(''));
-  }
-};
+var book1 = new Book('A Tale of Two Cities', 'Charles Dickens');
+
+book1.enshelf(shelf1);
+book1.enshelf(shelf1);
+book1.enshelf(shelf2);
