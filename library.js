@@ -39,12 +39,3 @@ Book.prototype.enshelf = function(shelf) {
     console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been put on shelf ', shelf.id, '.\n'].join(''));
   }
 };
-
-var shelf1 = new Shelf();
-var shelf2 = new Shelf();
-
-var book1 = new Book('A Tale of Two Cities', 'Charles Dickens');
-
-book1.enshelf(shelf1);
-book1.enshelf(shelf1);
-book1.enshelf(shelf2);
