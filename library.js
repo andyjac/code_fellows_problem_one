@@ -1,31 +1,59 @@
-function Book(title) {
-  this.title = title;
-}
-
-Book.prototype.enshelf = function(shelf) {
-  shelf.booksOnShelf[this.title] = 'On this shelf';
-  console.log(this.title, 'is now sitting on shelf', shelf.number);
-};
-
-Book.prototype.unshelf = function(shelf) {
-  delete shelf.booksOnShelf[this.title];
-  console.log(this.title, 'has been removed from shelf', shelf.number);
-};
-
 function Shelf(number) {
   this.number = number;
   this.booksOnShelf = {};
 }
 
-var book1 = new Book('A Tale of Two Cities');
-console.log(book1.title);
+function Book(title, author) {
+  this.title = title;
+  this.author = author;
+}
 
-var shelf1 = new Shelf(1);
-console.log(shelf1.number);
-console.log(shelf1.booksOnShelf);
+Shelf.prototype.reportBooks = function() {
+  var book
+      , num = 1;
 
-book1.enshelf(shelf1);
-console.log(shelf1.booksOnShelf);
+  if (Object.keys(this.booksOnShelf).length > 0) {
+    console.log(['The following books are on shelf ', this.number, ':', '\n'].join(''));
+    for (book in this.booksOnShelf) {
+      console.log([num, '. ', book, ' (', this.booksOnShelf[book].numberOfCopies, ').'].join(''));
+      num++;
+    }
+  }
+  else {
+    console.log(['There are no books on shelf ', this.number, '.'].join(''));
+  }
+  console.log('');
+};
 
-book1.unshelf(shelf1);
-console.log(shelf1.booksOnShelf);
+Book.prototype.enshelf = function(shelf) {
+  var bookOnShelf = shelf.booksOnShelf;
+
+  if (bookOnShelf[this.title] !== undefined) {
+    bookOnShelf[this.title].numberOfCopies += 1;
+    console.log(['Another copy of ', '\'', this.title, '\'', ' has been put on shelf ', shelf.number, '.'].join(''));
+    console.log(['There are now ', bookOnShelf[this.title].numberOfCopies, ' copies on this shelf.', '\n'].join(''));
+  }
+  else {
+    bookOnShelf[this.title] = { numberOfCopies: 1 };
+    console.log(['\'', this.title, '\'', ' has been put on shelf ', shelf.number, '.', '\n'].join(''));
+  }
+};
+
+Book.prototype.unshelf = function(shelf) {
+  var bookOnShelf = shelf.booksOnShelf;
+
+  if (bookOnShelf[this.title].numberOfCopies > 2) {
+    bookOnShelf[this.title].numberOfCopies -= 1;
+    console.log(['A copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.'].join(''));
+    console.log(['There are now ', bookOnShelf[this.title].numberOfCopies, ' copies on this shelf.', '\n'].join(''));
+  }
+  else if (bookOnShelf[this.title].numberOfCopies === 2) {
+    bookOnShelf[this.title].numberOfCopies -= 1;
+    console.log(['A copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.'].join(''));
+    console.log(['There is now 1 copy on this shelf.', '\n'].join(''));
+  }
+  else {
+    delete bookOnShelf[this.title];
+    console.log(['The last copy of ', '\'', this.title, '\'', ' has been removed from shelf ', shelf.number, '.', '\n'].join(''));
+  }
+};
