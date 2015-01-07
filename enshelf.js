@@ -3,7 +3,7 @@ module.exports = function(shelf) {
     console.log('It looks like that particular book is already on this shelf.\n');
   }
   else if (this.onShelf !== undefined) {
-    console.log(['It looks like that particular book is already on shelf ', this.onShelf, '.'].join(''));
+    console.log('It looks like that particular book is already on shelf ' + this.onShelf + '.');
     console.log('It will need to be removed before you can put it on this shelf.\n');
   }
   else {
