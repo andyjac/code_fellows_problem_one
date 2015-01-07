@@ -1,7 +1,21 @@
+var reportBooks = require('./report_books');
+var enshelf = require('./enshelf');
+var unshelf = require('./unshelf');
+
 function Shelf() {
   this.id = nextShelfId();
   this.books = {};
 }
+
+var nextShelfId = (function() {
+  var nextId = 0;
+  return function() {
+    nextId += 1;
+    return nextId;
+  };
+})();
+
+Shelf.prototype.reportBooks = reportBooks;
 
 function Book(title, author) {
   this.id = nextBookId();
@@ -17,58 +31,5 @@ var nextBookId = (function() {
   };
 })();
 
-var nextShelfId = (function() {
-  var nextId = 0;
-  return function() {
-    nextId += 1;
-    return nextId;
-  };
-})();
-
-Shelf.prototype.reportBooks = function() {
-  var book
-      , num = 1;
-
-  if (Object.keys(this.books).length > 0) {
-    console.log(['The following books are on shelf ', this.id, ':\n'].join(''));
-    for (book in this.books) {
-      console.log([num, '. ', '\'', this.books[book].title, '\'', ' by ', this.books[book].author].join(''));
-      num += 1;
-    }
-  }
-  else {
-    console.log('There aren\'t any books on this shelf');
-  }
-  console.log('');
-};
-
-Book.prototype.enshelf = function(shelf) {
-  if (this.onShelf === shelf.id) {
-    console.log('It looks like that particular book is already on this shelf.\n');
-  }
-  else if (this.onShelf !== undefined && this.onShelf !== shelf.id) {
-    console.log(['It looks like that particular book is already on shelf ', this.onShelf, '.'].join(''));
-    console.log('It will need to be removed before you can put it on this shelf.\n');
-  }
-  else {
-    shelf.books[this.id] = { title: this.title, author: this.author };
-    this.onShelf = shelf.id;
-    console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been put on shelf ', shelf.id, '.\n'].join(''));
-  }
-};
-
-Book.prototype.unshelf = function(shelf) {
-  if (this.onShelf === shelf.id) {
-    console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been removed from shelf ', shelf.id, '.\n'].join(''));
-    this.onShelf = undefined;
-    delete shelf.books[this.id];
-  }
-  else if (this.onShelf !== undefined && this.onShelf !== shelf.id) {
-    console.log(['It looks like that particular book is actually on shelf ', this.onShelf, '.'].join(''));
-    console.log('You will need to head over to that shelf if you want to remove it.\n');
-  }
-  else {
-    console.log('It looks like that book isn\'t on any shelf.\nYou\'ll need to put it on a shelf first, before it can be removed.\n');
-  }
-};
-
+Book.prototype.enshelf = enshelf;
+Book.prototype.unshelf = unshelf;
