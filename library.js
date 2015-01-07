@@ -5,6 +5,10 @@ var unshelf = require('./unshelf');
 function Shelf() {
   this.id = nextShelfId();
   this.books = {};
+
+  Object.defineProperty(this, 'id', {
+  writable: false
+  });
 }
 
 var nextShelfId = (function() {
@@ -21,6 +25,10 @@ function Book(title, author) {
   this.id = nextBookId();
   this.title = title;
   this.author = author;
+
+  Object.defineProperty(this, 'id', {
+  writable: false
+  });
 }
 
 var nextBookId = (function() {
