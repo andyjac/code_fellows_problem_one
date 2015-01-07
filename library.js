@@ -25,6 +25,23 @@ var nextShelfId = (function() {
   };
 })();
 
+Shelf.prototype.reportBooks = function() {
+  var book
+      , num = 1;
+
+  if (Object.keys(this.books).length > 0) {
+    console.log(['The following books are on shelf ', this.id, ':\n'].join(''));
+    for (book in this.books) {
+      console.log([num, '. ', '\'', this.books[book].title, '\'', ' by ', this.books[book].author].join(''));
+      num += 1;
+    }
+  }
+  else {
+    console.log('There aren\'t any books on this shelf');
+  }
+  console.log('');
+};
+
 Book.prototype.enshelf = function(shelf) {
   if (this.onShelf === shelf.id) {
     console.log('It looks like that particular book is already on this shelf.\n');
@@ -43,7 +60,7 @@ Book.prototype.enshelf = function(shelf) {
 Book.prototype.unshelf = function(shelf) {
   if (this.onShelf === shelf.id) {
     console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been removed from shelf ', shelf.id, '.\n'].join(''));
-    delete this.onShelf;
+    this.onShelf = undefined;
     delete shelf.books[this.id];
   }
   else if (this.onShelf !== undefined && this.onShelf !== shelf.id) {
@@ -51,6 +68,7 @@ Book.prototype.unshelf = function(shelf) {
     console.log('You will need to head over to that shelf if you want to remove it.\n');
   }
   else {
-    console.log('It looks like that book isn\'t on any shelf.\nYou\'ll need to put it on a shelf first, if you want to remove it\n');
+    console.log('It looks like that book isn\'t on any shelf.\nYou\'ll need to put it on a shelf first, before it can be removed.\n');
   }
 };
+
