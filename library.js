@@ -2,6 +2,11 @@ var reportBooks = require('./report_books');
 var enshelf = require('./enshelf');
 var unshelf = require('./unshelf');
 
+function Library() {
+  this.booksInLib = {};
+  this.numberOfShelves = [];
+}
+
 function Shelf() {
   this.id = nextShelfId();
   this.books = {};
@@ -38,6 +43,10 @@ var nextBookId = (function() {
     return nextId;
   };
 })();
+
+Shelf.prototype.removeBook = function(book) {
+  delete this.books[book];
+};
 
 Book.prototype.enshelf = enshelf;
 Book.prototype.unshelf = unshelf;
