@@ -5,7 +5,7 @@ var enshelf = require('./enshelf');
 var unshelf = require('./unshelf');
 
 Shelf.prototype.reportBooks = reportBooks;
-Shelf.prototype.remove = function(item) { delete this[item]; };
+Shelf.prototype.removeBook = function(item) { delete this.books[item]; };
 
 Book.prototype.enshelf = enshelf;
 Book.prototype.unshelf = unshelf;
