@@ -10,7 +10,7 @@ module.exports = function() {
     }
   }
   else {
-    console.log('There aren\'t any books on this shelf');
+    console.log('Shelf ' + this.id + ' is empty.');
   }
   console.log('');
 };
