@@ -8,7 +8,7 @@ module.exports = function(shelf) {
   }
   else {
     this.shelf = shelf;
-    shelf[this.id] = this;
+    shelf.books[this.id] = this;
     console.log(['A copy of ', '\'', this.title, '\'', ' with an id of (', this.id, ') has been put on shelf ', shelf.id, '.\n'].join(''));
   }
 };

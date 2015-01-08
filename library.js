@@ -9,6 +9,7 @@ function Library() {
 
 function Shelf() {
   this.id = nextShelfId();
+  this.books = {};
 
   Object.defineProperty(this, 'id', {
   writable: false
@@ -43,8 +44,8 @@ var nextBookId = (function() {
   };
 })();
 
-Shelf.prototype.remove = function(item) {
-  delete this[item];
+Shelf.prototype.removeBook = function(book) {
+  delete this.books[book];
 };
 
 Book.prototype.enshelf = enshelf;
