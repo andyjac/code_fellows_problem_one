@@ -5,15 +5,14 @@ function Book(title, author) {
   this.author = author;
 
   Object.defineProperty(this, 'id', {
-  writable: false,
+    writable: false,
   });
 }
 
 var nextBookId = (function() {
   var nextId = 0;
   return function() {
-    nextId += 1;
-    return nextId;
+    return ++nextId;
   };
 })();
 
@@ -51,10 +50,9 @@ BookListReporter.prototype.reportBooks = function(books) {
     return;
   }
 
-  var book;
-
   for (var i = 0; i < books.length; i++) {
-    console.log([i, '. ', '\'', books[i].title, '\'', ' by ', books[i].author].join(''));
+    var book = books[i];
+    console.log([(i + 1), '. ', '\'', book.title, '\'', ' by ', book.author].join(''));
   }
 
   console.log('');
@@ -82,6 +80,7 @@ Library.prototype.prettyPrintBooks = function() {
   var bookListReporter = new BookListReporter();
 
   bookListReporter.reportBooks(this.getBooks());
+  console.log('The following books are in library ' + this.id + ':\n');
 };
 
 Library.prototype.getBooks = function() {
@@ -95,15 +94,11 @@ Library.prototype.getBooks = function() {
   return books;
 };
 
-Library.prototype.reportShelfCount = function() {
-  var shelves = [];
+Library.prototype.shelfCount = function() {
+  var numberOfShelves = Object.keys(this.shelves).length;
+  console.log('There are ' + numberOfShelves + ' shelves in library ' + this.id + '.\n');
 
-  for (var shelfId in this.shelves) {
-    var shelf = this.shelves[shelfId];
-    shelves = shelves.concat(shelf);
-  }
-  console.log('There are ' + shelves.length + ' shelves in library ' + this.id + '.\n');
-  return shelves.length;
+  return numberOfShelves;
 };
 
 Library.prototype.addShelf = function(shelf) {
@@ -123,10 +118,6 @@ var Book = require('./book');
 var Shelf = require('./shelf');
 var Library = require('./library');
 
-// *****************************************************
-// Playground code goes here!
-// *****************************************************
-
 },{"./book":1,"./library":3,"./shelf":5}],5:[function(require,module,exports){
 function Shelf() {
   this.id = nextShelfId();
@@ -140,8 +131,7 @@ function Shelf() {
 var nextShelfId = (function() {
   var nextId = 0;
   return function() {
-    nextId += 1;
-    return nextId;
+    return ++nextId;
   };
 })();
 
