@@ -30,6 +30,16 @@ Library.prototype.getBooks = function() {
   return books;
 };
 
+Library.prototype.reportShelves = function() {
+  var shelves = [];
+
+  for (var shelfId in this.shelves) {
+    var shelf = this.shelves[shelfId];
+    shelves = shelves.concat(shelf);
+  }
+  console.log('There are ' + shelves.length + ' shelves in library ' + this.id + '.\n');
+};
+
 Library.prototype.addShelf = function(shelf) {
   console.log('Shelf ' + shelf.id + ' is now in library ' + this.id + '.\n');
   this.shelves[shelf.id] = shelf;
