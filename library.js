@@ -17,6 +17,7 @@ Library.prototype.prettyPrintBooks = function() {
   var bookListReporter = new BookListReporter();
 
   bookListReporter.reportBooks(this.getBooks());
+  console.log('The following books are in library ' + this.id + ':\n');
 };
 
 Library.prototype.getBooks = function() {
@@ -30,14 +31,11 @@ Library.prototype.getBooks = function() {
   return books;
 };
 
-Library.prototype.reportShelves = function() {
-  var shelves = [];
+Library.prototype.shelfCount = function() {
+  var numberOfShelves = Object.keys(this.shelves).length;
+  console.log('There are ' + numberOfShelves + ' shelves in library ' + this.id + '.\n');
 
-  for (var shelfId in this.shelves) {
-    var shelf = this.shelves[shelfId];
-    shelves = shelves.concat(shelf);
-  }
-  console.log('There are ' + shelves.length + ' shelves in library ' + this.id + '.\n');
+  return numberOfShelves;
 };
 
 Library.prototype.addShelf = function(shelf) {
