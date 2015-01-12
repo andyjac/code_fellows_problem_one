@@ -10,8 +10,7 @@ function Shelf() {
 var nextShelfId = (function() {
   var nextId = 0;
   return function() {
-    nextId += 1;
-    return nextId;
+    return ++nextId;
   };
 })();
 
