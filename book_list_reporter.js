@@ -2,7 +2,8 @@ function BookListReporter() {}
 
 BookListReporter.prototype.reportBooks = function(books) {
   if (books.length < 1) {
-    console.log('There are no books to report.') && return;
+    console.log('There are no books to report.');
+    return;
   }
 
   var book;
