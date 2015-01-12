@@ -1,3 +1,5 @@
+var BookListReporter = require('./book_list_reporter');
+
 function Shelf() {
   this.id = nextShelfId();
   this.books = {};
@@ -14,10 +16,6 @@ var nextShelfId = (function() {
   };
 })();
 
-Shelf.prototype.removeBook = function(item) {
-  delete this.books[item];
-};
-
 Shelf.prototype.getBooks = function() {
   var books = [];
 
@@ -27,6 +25,17 @@ Shelf.prototype.getBooks = function() {
   }
 
   return books;
+};
+
+Shelf.prototype.prettyPrintBooks = function() {
+  var bookListReporter = new BookListReporter();
+
+  console.log('The following books are on shelf ' + this.id + ':\n');
+  bookListReporter.reportBooks(this.getBooks());
+};
+
+Shelf.prototype.removeBook = function(item) {
+  delete this.books[item];
 };
 
 module.exports = Shelf;
