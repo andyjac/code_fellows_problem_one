@@ -1,11 +1,36 @@
-var Shelf = require('./shelf_class');
-var Book = require('./book_class');
-var reportBooks = require('./report_books');
-var enshelf = require('./enshelf');
-var unshelf = require('./unshelf');
+var Book = require('./book');
+var Shelf = require('./shelf');
 
-Shelf.prototype.reportBooks = reportBooks;
-Shelf.prototype.removeBook = function(item) { delete this.books[item]; };
+function Library() {
+  this.id = nextLibraryId();
+  this.booksInLib = {};
+  this.shelvesInLib = [];
+};
 
-Book.prototype.enshelf = enshelf;
-Book.prototype.unshelf = unshelf;
+var nextLibraryId = (function() {
+  var nextId = 0;
+  return function() {
+    nextId += 1;
+    return nextId;
+  };
+})();
+
+Library.prototype.numberOfShelves = function() {
+  console.log('There are ' + this.shelvesInLib.length + ' shelves in library ' + this.id + '.\n');
+};
+
+Library.prototype.listOfBooks = function() {
+  for (var shelf in this.booksInLib) {
+    console.log(this.booksInLib[shelf]);
+  }
+};
+
+var book1 = new Book('The Hobbit', 'J.R.R. Tolkien');
+
+var shelf1 = new Shelf();
+
+book1.enshelf(shelf1);
+
+shelf1.reportBooks();
+
+book1.unshelf();
