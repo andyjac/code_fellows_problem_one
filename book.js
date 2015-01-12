@@ -4,7 +4,7 @@ function Book(title, author) {
   this.author = author;
 
   Object.defineProperty(this, 'id', {
-  writable: false,
+    writable: false,
   });
 }
 
