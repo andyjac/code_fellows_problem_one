@@ -11,11 +11,27 @@ var nextLibraryId = (function() {
   };
 })();
 
-Library.prototype.prettyPrintBooks = function() {
-  var bookListReporter = new BookListReporter();
+Library.prototype.addShelf = function(shelf) {
+  console.log('Shelf ' + shelf.id + ' is now in library ' + this.id + '.\n');
+  this.shelves[shelf.id] = shelf;
+};
 
-  console.log('The following books are in library ' + this.id + ':\n');
-  bookListReporter.reportBooks(this.getBooks());
+Library.prototype.shelfCount = function() {
+  var numberOfShelves = Object.keys(this.shelves).length
+      , incrementor = 0;
+
+  for (var i = 0; i <= numberOfShelves; i++) {
+    if (this.shelves[i] !== undefined) incrementor++;
+  }
+  if (incrementor === 0) {
+    console.log('There are no shelves in library ' + this.id + '.\n');
+  } else if (incrementor === 1) {
+    console.log('There is 1 shelf in library ' + this.id + '.\n');
+  } else {
+    console.log('There are ' + incrementor + ' shelves in library ' + this.id + '.\n');
+  }
+
+  return incrementor;
 };
 
 Library.prototype.getBooks = function() {
@@ -23,22 +39,17 @@ Library.prototype.getBooks = function() {
 
   for (var shelfId in this.shelves) {
     var shelf = this.shelves[shelfId];
-    books = books.concat(shelf.getBooks());
+    if (shelf !== undefined) books = books.concat(shelf.getBooks());
   }
 
   return books;
 };
 
-Library.prototype.shelfCount = function() {
-  var numberOfShelves = Object.keys(this.shelves).length;
-  console.log('There are ' + numberOfShelves + ' shelves in library ' + this.id + '.\n');
+Library.prototype.prettyPrintBooks = function() {
+  var bookListReporter = new BookListReporter();
 
-  return numberOfShelves;
-};
-
-Library.prototype.addShelf = function(shelf) {
-  console.log('Shelf ' + shelf.id + ' is now in library ' + this.id + '.\n');
-  this.shelves[shelf.id] = shelf;
+  console.log('The following books are in library ' + this.id + ':\n');
+  bookListReporter.reportBooks(this.getBooks());
 };
 
 Library.prototype.removeShelf = function(shelf) {
@@ -62,10 +73,6 @@ var nextShelfId = (function() {
   };
 })();
 
-Shelf.prototype.removeBook = function(item) {
-  delete this.books[item];
-};
-
 Shelf.prototype.getBooks = function() {
   var books = [];
 
@@ -77,13 +84,24 @@ Shelf.prototype.getBooks = function() {
   return books;
 };
 
+Shelf.prototype.prettyPrintBooks = function() {
+  var bookListReporter = new BookListReporter();
+
+  console.log('The following books are on shelf ' + this.id + ':\n');
+  bookListReporter.reportBooks(this.getBooks());
+};
+
+Shelf.prototype.removeBook = function(item) {
+  delete this.books[item];
+};
+
 function Book(title, author) {
   this.id = nextBookId();
   this.title = title;
   this.author = author;
 
   Object.defineProperty(this, 'id', {
-  writable: false,
+    writable: false,
   });
 }
 
@@ -99,7 +117,6 @@ Book.prototype.enshelf = function(shelf) {
     console.log('It looks like that particular book is already on this shelf.\n');
   } else if (this.shelf !== undefined) {
     console.log('It looks like that particular book is already on shelf ' + this.shelf.id + '.');
-    console.log('It will need to be removed before you can put it on this shelf.\n');
   } else {
     this.shelf = shelf;
     shelf.books[this.id] = this;
@@ -121,10 +138,9 @@ function BookListReporter() {}
 
 BookListReporter.prototype.reportBooks = function(books) {
   if (books.length < 1) {
-    console.log('There are no books to report.');
+    console.log('There are no books to report.\n');
     return;
   }
-
   for (var i = 0; i < books.length; i++) {
     var book = books[i];
     console.log([(i + 1), '. ', '\'', book.title, '\'', ' by ', book.author].join(''));
