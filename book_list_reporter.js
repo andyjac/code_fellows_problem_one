@@ -6,10 +6,9 @@ BookListReporter.prototype.reportBooks = function(books) {
     return;
   }
 
-  var book;
-
   for (var i = 0; i < books.length; i++) {
-    console.log([i, '. ', '\'', books[i].title, '\'', ' by ', books[i].author].join(''));
+    var book = books[i];
+    console.log([(i + 1), '. ', '\'', book.title, '\'', ' by ', book.author].join(''));
   }
 
   console.log('');

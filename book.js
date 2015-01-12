@@ -11,8 +11,7 @@ function Book(title, author) {
 var nextBookId = (function() {
   var nextId = 0;
   return function() {
-    nextId += 1;
-    return nextId;
+    return ++nextId;
   };
 })();
 
