@@ -50,10 +50,16 @@ Library.prototype.getBooks = function() {
 };
 
 Library.prototype.prettyPrintBooks = function() {
-  var bookListReporter = new BookListReporter();
+  var bookListReporter = new BookListReporter()
+      , booksInLib = this.getBooks();
 
-  console.log('The following books are in library ' + this.id + ':\n');
-  bookListReporter.reportBooks(this.getBooks());
+  if (booksInLib.length === 0) {
+    console.log('There are no books to report in library ' + this.id + '.\n');
+    return;
+  } else {
+    console.log('The following books are in library ' + this.id + ':\n');
+    bookListReporter.reportBooks(booksInLib);
+  }
 };
 
 Library.prototype.removeShelf = function(shelf) {

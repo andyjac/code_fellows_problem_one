@@ -28,10 +28,16 @@ Shelf.prototype.getBooks = function() {
 };
 
 Shelf.prototype.prettyPrintBooks = function() {
-  var bookListReporter = new BookListReporter();
+  var bookListReporter = new BookListReporter()
+      , booksOnShelf = this.getBooks();
 
-  console.log('The following books are on shelf ' + this.id + ':\n');
-  bookListReporter.reportBooks(this.getBooks());
+  if (booksOnShelf.length === 0) {
+    console.log('There are no books to report on shelf ' + this.id + '.\n');
+    return;
+  } else {
+    console.log('The following books are on shelf ' + this.id + ':\n');
+    bookListReporter.reportBooks(booksOnShelf);
+  }
 };
 
 Shelf.prototype.removeBook = function(item) {
