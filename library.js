@@ -43,7 +43,10 @@ Library.prototype.getBooks = function() {
 
   for (var shelfId in this.shelves) {
     var shelf = this.shelves[shelfId];
-    if (shelf !== undefined) books = books.concat(shelf.getBooks());
+
+    if (this.shelves.hasOwnProperty(shelfId) && shelf !== undefined) {
+      books = books.concat(shelf.getBooks());
+    }
   }
 
   return books;

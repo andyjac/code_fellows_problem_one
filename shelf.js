@@ -21,7 +21,10 @@ Shelf.prototype.getBooks = function() {
 
   for (var bookId in this.books) {
     var book = this.books[bookId];
-    books.push(book);
+
+    if(this.books.hasOwnProperty(bookId) && book !== undefined) {
+      books.push(book);
+    }
   }
 
   return books;
@@ -40,8 +43,8 @@ Shelf.prototype.prettyPrintBooks = function() {
   }
 };
 
-Shelf.prototype.removeBook = function(item) {
-  delete this.books[item];
+Shelf.prototype.removeBook = function(book) {
+  delete this.books[book];
 };
 
 module.exports = Shelf;
