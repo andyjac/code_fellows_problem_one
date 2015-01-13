@@ -19,21 +19,23 @@ Library.prototype.addShelf = function(shelf) {
 };
 
 Library.prototype.shelfCount = function() {
-  var numberOfShelves = Object.keys(this.shelves).length
-      , incrementor = 0;
+  var numberOfShelves = 0;
 
-  for (var i = 0; i <= numberOfShelves; i++) {
-    if (this.shelves[i] !== undefined) incrementor++;
+  for (var shelf in this.shelves) {
+    if (this.shelves.hasOwnProperty(shelf) && shelf !== undefined) {
+      numberOfShelves++;
+    }
   }
-  if (incrementor === 0) {
+
+  if (numberOfShelves === 0) {
     console.log('There are no shelves in library ' + this.id + '.\n');
-  } else if (incrementor === 1) {
+  } else if (numberOfShelves === 1) {
     console.log('There is 1 shelf in library ' + this.id + '.\n');
   } else {
-    console.log('There are ' + incrementor + ' shelves in library ' + this.id + '.\n');
+    console.log('There are ' + numberOfShelves + ' shelves in library ' + this.id + '.\n');
   }
 
-  return incrementor;
+  return numberOfShelves;
 };
 
 Library.prototype.getBooks = function() {
