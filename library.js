@@ -1,6 +1,6 @@
 var BookListReporter = require('./book_list_reporter');
 
-function Library(shelves) {
+function Library() {
   this.id = nextLibraryId();
   this.shelves = {};
 }
